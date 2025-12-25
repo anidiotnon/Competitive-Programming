@@ -1,1 +1,84 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long int ll;
+
+ll n;
+ll a;
+ll b;
+map<ll, ll> cnt;
+vector<pair<ll, ll>> cows; // available first, ids second
+ll amt;
+ll id;
+ll res = 0;
+vector<ll> ids;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    cin >> n >> a >> b;
+
+    for (int i = 0; i < n; i++) {
+        cin >> amt >> id;
+
+        ids.push_back(id);
+        cnt[id] = amt;
+    }
+    ll available = 0;
+    if (a > b) {
+        swap(a, b);
+    }
+    for (int i = 0; i < n; i++) {
+        available = 0;
+        ll firstPartner = a - id;
+        ll secPartner = b - id;
+
+        //if (firstPartner != ids[i]) {
+            available += cnt[firstPartner];
+       // }
+      //  if (secPartner != ids[i]) {
+            available += cnt[secPartner];
+      //  }
+        cows.push_back({ available, -ids[i] });
+    }
+    sort(cows.begin(), cows.end());
+
+    ll pairs = 0;
+
+    for (int i = 0; i < n; i++) {
+        id = -cows[i].second;
+        ll firstPartner = a - id;
+        ll secPartner = b - id;
+
+        if (firstPartner >= 0 && firstPartner != id) {
+            pairs = min(cnt[id], cnt[firstPartner]);
+            res += pairs;
+
+            cnt[id] -= pairs;
+            cnt[firstPartner] -= pairs;
+        }
+        if (secPartner >= 0 && secPartner != id) {
+            pairs = min(cnt[id], cnt[secPartner]);
+            res += pairs;
+
+            cnt[id] -= pairs;
+            cnt[secPartner] -= pairs;
+        }
+    }
+    for (int i = 0; i < n; i++) {// same cow pairing
+        id = -cows[i].second;
+
+        if (id + id == a or id + id == b) {
+            res += cnt[id] / 2;
+        }
+    }
+    cout << res << endl;
+
+}
 
