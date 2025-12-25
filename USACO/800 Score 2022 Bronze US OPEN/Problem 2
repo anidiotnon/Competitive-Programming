@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector <pair<char,long long int>> claims;
+
+int main () {
+	int n;
+	int res = 2000;
+	int curRes = 0;
+	char curChar;
+	int curInt;
+	vector <long long int> hidingArea;
+	
+	cin >> n;
+	
+	for (int i = 0; i < n; i++) {
+		cin >> curChar >> curInt;
+		hidingArea.push_back(curInt);
+		claims.push_back(make_pair(curChar, curInt));
+	}
+	for (int i = 0; i < hidingArea.size(); i++) {
+		for (int m = 0; m < n; m++) {
+			if (claims[m].first == 'G') {
+				if (hidingArea[i] < claims[m].second) {
+					curRes++;
+				}
+			}
+			else if (claims[m].first == 'L') {
+				if (hidingArea[i] > claims[m].second) {
+					curRes++;
+				}
+			}
+		}
+		res = min(res, curRes);
+		curRes = 0;
+	}
+	cout << res;
+}
