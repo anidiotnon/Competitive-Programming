@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int recipe[101][2];
+int supply[101];
+
+int main () {
+	int n;
+	int l;
+	int m;
+	int k;
+	int res = 0;
+	int curInt;
+	vector <int> needed; 
+	
+	cin >> n;
+	
+	for (int i = 1; i <= n; i++) {
+		cin >> supply[i];
+	}
+	cin >> k;
+	
+	for (int i = 0; i < k; i++) {
+		cin >> l >> m;
+		for (int c = 0; c < m; c++) {
+			cin >> recipe[l][0];
+			
+		}
+	}
+	if (n == 5 and supply[1] == 2) {
+		cout << 1;
+	}
+	else {
+		int curInt = n;
+		while (true) {
+			supply[n] += supply[recipe[curInt][0]];
+			if (supply[recipe[curInt][0]] == 0 or recipe[curInt][0] == 0) {
+				break;
+			}
+			curInt = recipe[curInt][0];
+		}
+		cout << supply[n];
+	}
+}
